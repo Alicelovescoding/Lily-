@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ titel }}</title>
+    <style>
+        body { 
+            font-family: system-ui, -apple-system, sans-serif; 
+            background: #121212; 
+            color: #e0e0e0; 
+            margin: 2rem; 
+        }
+        .container { 
+            max-width: 500px; 
+            margin: 0 auto; 
+            background: #1e1e1e; 
+            padding: 1.5rem; 
+            border-radius: 8px; 
+            border: 1px solid #333; 
+        }
+        h1 { margin-top: 0; font-size: 1.5rem; }
+        
+        /* Eingabebereich */
+        .add-form { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
+        input[type="text"] { 
+            flex: 1; 
+            padding: 0.5rem; 
+            border-radius: 4px; 
+            border: 1px solid #444; 
+            background: #2a2a2a; 
+            color: #fff; 
+        }
+        .btn-add { 
+            padding: 0.5rem 1rem; 
+            background: #162d5f; 
+            color: white; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+        }
+        
+        /* Aufgabenliste */
+        ul { list-style: none; padding: 0; margin: 0; }
+        li { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 0.6rem 0.8rem; 
+            margin-bottom: 0.5rem; 
+            background: #262626; 
+            border-radius: 4px; 
+            border: 1px solid #333; 
+        }
+        .todo-text { word-break: break-word; margin-right: 1rem; }
+        .btn-delete { 
+            background: transparent; 
+            color: #ef4444; 
+            border: 1px solid #ef4444; 
+            border-radius: 4px; 
+            padding: 2px 7px; 
+            cursor: pointer; 
+            font-size: 0.85rem; 
+            transition: all 0.2s; 
+        }
+        .btn-delete:hover { 
+            background: #ef4444; 
+            color: white; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ titel }}</h1>
+
+        <!-- Neue Aufgabe anlegen -->
+        <form class="add-form" action="/add" method="POST">
+            <input type="text" name="neue_aufgabe" placeholder="Aufgabe eintippen..." required>
+            <button type="submit" class="btn-add">Hinzufügen</button>
+        </form>
+
+        <!-- Liste: Jeder Eintrag genau einmal mit '✕' ganz rechts -->
+        <ul>
+            {% for aufgabe in aufgaben %}
+                <li>
+                    <span class="todo-text">{{ aufgabe }}</span>
+                    <form action="{{ url_for('aufgabe_loeschen', index=loop.index0) }}" method="POST" style="margin: 0;">
+                        <button type="submit" class="btn-delete" title="Löschen">✕</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
